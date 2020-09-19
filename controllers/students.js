@@ -2,7 +2,9 @@ const { getMaxListeners } = require("../models/students")
 const Student = require("../models/students")
 const formidable = require("formidable");
 const _ = require("lodash")
-const fs = require("fs")
+const fs = require("fs");
+const router = require("../routes/students");
+
 
 // Get Student By its Id 
 exports.getStudentById = (req,res,next,id) => {
@@ -20,6 +22,8 @@ exports.getStudentById = (req,res,next,id) => {
     next();
 
 }
+
+
 
 
 //Creating student record 
@@ -79,27 +83,127 @@ exports.createRecord = (req,res) => {
 
 
         })
-
-
-
     })
+}
 
-    
+// Get Record by id
+exports.getRecord = (req,res) => {
+    req.studentRecord.photo = undefined;
+    return res.json(req.studentRecord)
+}
+
+// Get Student Photo 
+exports.photo = (req,res,next) => {
+
+    if(req.studentRecord.photo.data){
+
+        res.set("Content-Type", req.studentRecord.photo.contentType)
+        return res.send(req.studentRecord.photo.data)
+    }
+    next()
+
+}
+
+//Update Student record
+router.updateRecord = (req,res)=> {
+    let form = new formidable.IncomingForm() 
+    form.keepExtensions = true;
+
+    form.parse(req, (err, fields, file) => {
+        if(err)
+        {
+            return res.status(400).json({
+                error: "Problem wth image"
+            })
+        }
+
+        //updation code
+        let record = req.studentRecord
+        record = _.extend(record,fields)
+        
+
+       
+        //handle file here
+        if(file.photo)
+        {
+            if(file.photo.size > 3000000)
+            {
+                return res.status(400).json({
+                    error:"File Size to big "
+                })
+            }
+            record.photo.data = fs.readFileSync(file.photo.path);
+            record.photo.contentType = file.photo.type;
+          
+        }
+       
+
+        record.save((err,record) => {
+            if(err)
+            {
+                return res.status(400).json({
+                    error: "Updation product failed"
+                })
+            }
+
+            res.json(record);
+
+        })
+    })
+}
+
+
+//Delete Student record
+
+router.deleteRecord= (req,res) => {
+
+    let reco = req.studentRecord;
+    reco.remove((err, delReco) => {
+        if(err)
+        {
+            return res.status(400).json({
+                error: "Failed to delete record"
+            })
+        }
+        res.json({
+            message: "Deleted Success ",delReco
+        })
+    })
+}
+
+//Show list of Students
+exports.getRecords = (req,res) => {
+
+    Student.find().exec((err,records) => {
+        if (err) {
+            return res.status(400).json({
+              error: "NO Records FOUND"
+            });
+          }
+          res.json(records);
+    })
 }
 
 
 
-//Edit Student
+//todo Search Students option
 
+exports.getStudentByEmail = (req,res,next,id) => {
 
-//Delete Student
+    Student.find({email: id})
+    .exec((err, student) => {
+        if(err)
+        {
+            return res.status(400).json({
+                error: "Record not found"
+            })
+        }
+        req.studentSearchRecord = student;
+    })
+    next();
 
+}
 
-//Show All Students
-
-
-//Show a student
-
-
-//Search Students option
-
+exports.getRecordByEmail = (req,res) => {
+    return res.json(req.studentSearchRecord)
+}
