@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Think201 - NodeJS Internship Technology Challenge",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/priyanshps/Qstudent.git"
+  },
+  "author": "Priyansh Shukla",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/priyanshps/Qstudent/issues"
+  },
+  "homepage": "https://github.com/priyanshps/Qstudent#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.6"
+  }
+}
