@@ -2,30 +2,30 @@ const mongoose = require("mongoose")
 
 const studentSchema = new mongoose.Schema({
 
-    Name:
+    name:
     {   
         type:"String",
         required: true,
         trim:true
     },
-    Email:
+    email:
     {
         type:"String",
         required:true,
         unique:true
     },
-    Phone:
+    phone:
     {
         type:Number,
         required: true,
         unique: true,
     },
-    Photo:
+    photo:
     {
         data: Buffer,
         contentType: String,
     },
-    Degree:
+    degree:
     {
         type:"String",
         required:true
