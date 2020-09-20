@@ -32,9 +32,7 @@ moongoose.connect(process.env.DATABASE, {
 app.use(bodyParser.json());
 
 
-app.get("/" ,(req,res) => {
-    res.send("hello backend")
-})
+
 
 
 app.use("/api" , studentRoute);

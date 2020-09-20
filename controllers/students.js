@@ -1,26 +1,29 @@
 
-const Student = require("../models/students")
+const Students = require("../models/students")
 const formidable = require("formidable");
 const _ = require("lodash")
 const fs = require("fs");
 const router = require("../routes/students");
 
 
-// Get Student By its Id 
-exports.getStudentById = (req,res,next,id) => {
+// Get Students By its Id 
+exports.getStudentById = (req, res, next, id) => {
 
-    Student.findById(id)
+    //console.log("id ",id);
+    Students.findById(id)
     .exec((err, student) => {
-        if(err)
+        if(err || !student)
         {
             return res.status(400).json({
                 error: "Record not found"
             })
         }
-        req.studentRecord = student;
+        req.record = student;
+        console.log("data1 ",req.record);
+        next(); 
     })
-    next();
-
+    // next(); 
+    // console.log("id ",id);
 }
 
 
@@ -52,7 +55,7 @@ exports.createRecord = (req,res) => {
         }
 
 
-        let record = new Student(fields)
+        let record = new Students(fields)
 
 
         //Handling Image 
@@ -68,14 +71,14 @@ exports.createRecord = (req,res) => {
             record.photo.contentType = file.photo.type
         }
 
-
+        console.log(record);
         //Saving record
         record.save((err,record) => {
 
             if(err)
             {
                 res.status(400).json({
-                    error: "Saveing record fail"
+                    error: "Saveing record fail",err
                 })
             }
 
@@ -88,23 +91,25 @@ exports.createRecord = (req,res) => {
 
 // Get Record by id
 exports.getRecord = (req,res) => {
-    req.studentRecord.photo = undefined;
-    return res.json(req.studentRecord)
+    const inter = req.record;
+    console.log("final data ",inter)
+    req.record.photo = undefined;
+    return res.json(req.record)
 }
 
-// Get Student Photo 
+// Get Students Photo 
 exports.photo = (req,res,next) => {
 
-    if(req.studentRecord.photo.data){
+    if(req.record.photo.data){
 
-        res.set("Content-Type", req.studentRecord.photo.contentType)
-        return res.send(req.studentRecord.photo.data)
+        res.set("Content-Type", req.record.photo.contentType)
+        return res.send(req.record.photo.data)
     }
     next()
 
 }
 
-//Update Student record
+//Update Students record
 exports.updateRecord = (req,res)=> {
     let form = new formidable.IncomingForm() 
     form.keepExtensions = true;
@@ -119,8 +124,9 @@ exports.updateRecord = (req,res)=> {
         const {name, description, price, stock, category} = fields
 
         //updation code
-        let newRecord = req.studentRecord
-        record = _.extend(newRecord,fields)
+        console.log(req.record);
+        let newRecord = req.record
+        newRecord = _.extend(newRecord,fields)
 
 
        
@@ -139,7 +145,7 @@ exports.updateRecord = (req,res)=> {
         }
        
         
-        record.save((err,record) => {
+        newRecord.save((err,record) => {
             if(err)
             {
                 return res.status(400).json({
@@ -154,11 +160,11 @@ exports.updateRecord = (req,res)=> {
 }
 
 
-//Delete Student record
+//Delete Students record
 
 exports.deleteRecord = (req,res) => {
 
-    let reco = req.studentRecord;
+    let reco = req.record;
     reco.remove((err, delReco) => {
         if(err)
         {
@@ -175,7 +181,7 @@ exports.deleteRecord = (req,res) => {
 //Show list of Students
 exports.getRecords = (req,res) => {
 
-    Student.find().exec((err,records) => {
+    Students.find().exec((err,records) => {
         if (err) {
             return res.status(400).json({
               error: "NO Records FOUND"
@@ -191,7 +197,7 @@ exports.getRecords = (req,res) => {
 
 exports.getStudentByEmail = (req,res,next,id) => {
 
-    Student.find({email: id})
+    Students.find({email: id})
     .exec((err, student) => {
         if(err)
         {

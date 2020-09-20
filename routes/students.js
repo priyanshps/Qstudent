@@ -1,9 +1,6 @@
 const express = require("express")
 const router = express.Router()
 
-
-
-
 const { getStudentById, 
     createRecord, 
     getRecord, 
@@ -45,3 +42,4 @@ router.delete("/record/:studentId", deleteRecord)
 
 
 module.exports = router
+

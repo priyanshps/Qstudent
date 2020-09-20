@@ -13,12 +13,12 @@ const studentSchema = new mongoose.Schema({
         type:"String",
         required:true,
         unique:true
+
     },
     phone:
     {
         type:Number,
         required: true,
-        unique: true,
     },
     photo:
     {
@@ -31,6 +31,6 @@ const studentSchema = new mongoose.Schema({
         required:true
     }
     
-})
+},{timestamps: true})
 
 module.exports = mongoose.model("Students", studentSchema);
