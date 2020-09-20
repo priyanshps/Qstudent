@@ -1,4 +1,4 @@
-const { getMaxListeners } = require("../models/students")
+
 const Student = require("../models/students")
 const formidable = require("formidable");
 const _ = require("lodash")
@@ -105,7 +105,7 @@ exports.photo = (req,res,next) => {
 }
 
 //Update Student record
-router.updateRecord = (req,res)=> {
+exports.updateRecord = (req,res)=> {
     let form = new formidable.IncomingForm() 
     form.keepExtensions = true;
 
@@ -116,11 +116,12 @@ router.updateRecord = (req,res)=> {
                 error: "Problem wth image"
             })
         }
+        const {name, description, price, stock, category} = fields
 
         //updation code
-        let record = req.studentRecord
-        record = _.extend(record,fields)
-        
+        let newRecord = req.studentRecord
+        record = _.extend(newRecord,fields)
+
 
        
         //handle file here
@@ -137,7 +138,7 @@ router.updateRecord = (req,res)=> {
           
         }
        
-
+        
         record.save((err,record) => {
             if(err)
             {
@@ -155,7 +156,7 @@ router.updateRecord = (req,res)=> {
 
 //Delete Student record
 
-router.deleteRecord= (req,res) => {
+exports.deleteRecord = (req,res) => {
 
     let reco = req.studentRecord;
     reco.remove((err, delReco) => {
@@ -180,7 +181,7 @@ exports.getRecords = (req,res) => {
               error: "NO Records FOUND"
             });
           }
-          res.json(records);
+          res.json(records);    
     })
 }
 

@@ -11,14 +11,14 @@ const { getStudentById,
     updateRecord,
     deleteRecord,
     getStudentByEmail,
-    getRecordByEmail
+    getRecordByEmail,
+
 } = require('../controllers/students') 
 
-const { update } = require("../models/students")
+
 
 //Getting student Id by parammeters and passing to getStudentById
 router.param("studentId", getStudentById)
-
 router.param("emailId", getStudentByEmail)
 
 
@@ -40,6 +40,7 @@ router.put("/record/:studentId", updateRecord)
 
 //Delete Student Record
 router.delete("/record/:studentId", deleteRecord)
+
 
 
 
