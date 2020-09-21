@@ -11,6 +11,7 @@ exports.getStudentById = (req, res, next, id) => {
 
     //console.log("id ",id);
     Students.findById(id)
+    .lean()
     .exec((err, student) => {
         if(err || !student)
         {
@@ -91,10 +92,10 @@ exports.createRecord = (req,res) => {
 
 // Get Record by id
 exports.getRecord = (req,res) => {
-    const inter = req.record;
-    console.log("final data ",inter)
+    const data = req.record;
+    //console.log("final data ",inter)
     req.record.photo = undefined;
-    return res.json(req.record)
+    return res.json(req.record)   
 }
 
 // Get Students Photo 

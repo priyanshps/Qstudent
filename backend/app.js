@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require("body-parser");
 const moongoose = require('mongoose')
+const exphbs = require('express-handlebars')
 const app = express()
 
 
@@ -19,8 +20,8 @@ moongoose.connect(process.env.DATABASE, {
 .then(() => {
     console.log("DB CONNECTED")
 })
-.catch(() => {
-    console.log("DB ERROR")
+.catch((err) => {
+    console.log("DB ERROR",err)
 })
 
 
@@ -29,10 +30,20 @@ moongoose.connect(process.env.DATABASE, {
 
 
 //Middlewares
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+app.use(express.static('views/images'))
+
+//handlebars
+app.engine('.hbs', exphbs({defaultLayout: 'main', extname:  '.hbs'}));
+app.set('view engine', '.hbs');
 
 
 
+
+app.get("/", (req,res) => {
+    res.render('landing' )
+})
 
 
 app.use("/api" , studentRoute);
