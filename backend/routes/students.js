@@ -3,7 +3,8 @@ const router = express.Router()
 
 const { getStudentById, 
     createRecord, 
-    getRecord, 
+    getRecord,
+    getRecords, 
     photo,
     updateRecord,
     deleteRecord,
@@ -38,7 +39,8 @@ router.put("/record/:studentId", updateRecord)
 //Delete Student Record
 router.delete("/record/:studentId", deleteRecord)
 
-
+//All records 
+router.get("/records" ,getRecords)  
 
 
 module.exports = router

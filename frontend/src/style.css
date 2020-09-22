@@ -1,0 +1,18 @@
+#grad {
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
+  }
+
+#landing {
+    padding-top: 40vh;
+    position: relative;
+    background-color: white;
+    text-align: center;
+    z-index: 1;
+  }
+
+  #landing > h1{
+    margin: 0.5em auto;
+    font-weight: bolder;
+
+  }
+  
