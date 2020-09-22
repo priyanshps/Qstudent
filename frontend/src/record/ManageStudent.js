@@ -1,8 +1,32 @@
-import React from 'react'
+import React ,{useState ,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import Base from './Base'
+import { getAllRecords } from './helper/recordapicall'
 
 export default function ManageStudent() {
+
+    const [records, setrecords] = useState([])
+    const [error, seterror] = useState(false)
+
+    const loadAllRecords = () => {
+        getAllRecords().then(data => {
+            if(data.error)
+            {
+                seterror(data.error)
+            }
+            else{
+                setrecords(data)
+            }
+        })
+    }
+
+    useEffect(() => {
+        loadAllRecords()
+       
+    }, [])
+    
+
+
     return (
         <>
         <Base />
@@ -19,19 +43,28 @@ export default function ManageStudent() {
             <table class="table">
                 <thead>
                     <tr>
-                    
                     <th scope="col">Name</th>
                     <th scope="col">Last</th>
                     <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Name</td>
-                        <td><Link to="">Email </Link></td>
-                        <td><Link className="btn btn-sm btn-info btn-float"> Edit </Link> </td>
-                       
-                    </tr>
+
+                    {records.map((record, index) => {
+                        return(
+                            <tr>
+                                <td>{record.name}</td>
+                                <td><Link to="">{record.email} </Link></td>
+                                <td><Link 
+                                className="btn btn-sm btn-info btn-float" 
+                                to={`/update/${record._id}`}
+                                > Edit </Link> </td>
+                        
+                            </tr>
+
+                        )
+                    })}
+                    
                     
                 </tbody>    
             </table>

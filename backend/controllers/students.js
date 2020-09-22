@@ -11,7 +11,6 @@ exports.getStudentById = (req, res, next, id) => {
 
     //console.log("id ",id);
     Students.findById(id)
-    .lean()
     .exec((err, student) => {
         if(err || !student)
         {
@@ -79,7 +78,7 @@ exports.createRecord = (req,res) => {
             if(err)
             {
                 res.status(400).json({
-                    error: "Saveing record fail",err
+                    error: "Saveing record fail".err
                 })
             }
 
@@ -112,6 +111,7 @@ exports.photo = (req,res,next) => {
 
 //Update Students record
 exports.updateRecord = (req,res)=> {
+    
     let form = new formidable.IncomingForm() 
     form.keepExtensions = true;
 
@@ -122,13 +122,14 @@ exports.updateRecord = (req,res)=> {
                 error: "Problem wth image"
             })
         }
-        const {name, description, price, stock, category} = fields
 
+        const {name, description, price, stock, category} = fields
+        
+       
         //updation code
-        console.log(req.record);
         let newRecord = req.record
         newRecord = _.extend(newRecord,fields)
-
+        
 
        
         //handle file here
@@ -140,13 +141,14 @@ exports.updateRecord = (req,res)=> {
                     error:"File Size to big "
                 })
             }
-            record.photo.data = fs.readFileSync(file.photo.path);
-            record.photo.contentType = file.photo.type;
+            newRecord.photo.data = fs.readFileSync(file.photo.path);
+            newRecord.photo.contentType = file.photo.type;
           
         }
        
+
         
-        newRecord.save((err,record) => {
+        newRecord.save((err,newRecord) => {
             if(err)
             {
                 return res.status(400).json({
@@ -154,7 +156,7 @@ exports.updateRecord = (req,res)=> {
                 })
             }
 
-            res.json(record);
+            res.json(newRecord);
 
         })
     })
@@ -182,12 +184,13 @@ exports.deleteRecord = (req,res) => {
 //Show list of Students
 exports.getRecords = (req,res) => {
 
-    Students.find().exec((err,records) => {
+    Students.find().select("-photo").exec((err,records) => {
         if (err) {
             return res.status(400).json({
               error: "NO Records FOUND"
             });
           }
+          console.log("records 0 ".records)
           res.json(records);    
     })
 }

@@ -8,6 +8,7 @@ export const createRecord = (record) => {
         body: record
     })
     .then(response => {
+        
         return response.json()
     })
     .catch(err => console.log(err))
@@ -18,10 +19,11 @@ export const createRecord = (record) => {
 
 export const getAllRecords = () => {
 
-    return fetch(`${API}/records`,{
+    return fetch(`${API}/records/`,{
         method:"GET"
     })
     .then(response => {
+        console.log(response)
         return response.json()
     })
     .catch(err => console.log(err))
@@ -63,4 +65,20 @@ export const  deleteRecord = (studentId) => {
         return response.json()
     })
     .catch(err => console.log(err))
+}
+
+
+//Get One record
+
+export const getRecord = (studentId) => {
+
+    return fetch(`${API}/record/${studentId}`,{
+        method:"GET"
+    })
+    .then(response => {
+        console.log(response)
+        return response.json()
+    })
+    .catch(err => console.log(err))
+
 }

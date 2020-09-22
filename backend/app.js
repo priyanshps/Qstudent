@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require("body-parser");
 const moongoose = require('mongoose')
+const cors = require("cors");
 const exphbs = require('express-handlebars')
 const app = express()
 
@@ -32,6 +33,7 @@ moongoose.connect(process.env.DATABASE, {
 //Middlewares
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+app.use(cors());
 app.use(express.static('views/images'))
 
 //handlebars
