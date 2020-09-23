@@ -89,13 +89,29 @@ exports.createRecord = (req,res) => {
     })
 }
 
-// Get Record by id
+// Get Record by id for list of student
 exports.getRecord = (req,res) => {
-    const data = req.record;
-    //console.log("final data ",inter)
-    req.record.photo = undefined;
+   
+    req.record.photo = undefined
     return res.json(req.record)   
 }
+
+
+exports.photo = (req,res,next) => {
+
+    console.log("Photo data ".req.record.photo.data)
+    if(req.record.photo.data){
+
+        res.set("Content-Type", req.record.photo.contentType)
+        return res.send(req.record.photo.data)
+    }
+    next()
+
+}
+
+
+
+
 
 // Get Students Photo 
 exports.photo = (req,res,next) => {
@@ -197,24 +213,22 @@ exports.getRecords = (req,res) => {
 
 
 
-//todo Search Students option
 
-exports.getStudentByEmail = (req,res,next,id) => {
 
-    Students.find({email: id})
-    .exec((err, student) => {
+
+exports.getRecordsByName = (req,res) => {
+   
+    let userPattern = new RegExp("^" +req.params.name)
+
+    Students.find({name:{$regex:userPattern}})
+    .select("-photo")
+    .exec((err,studends) => {
         if(err)
         {
-            return res.status(400).json({
-                error: "Record not found"
-            })
+            res.status(400).json({err})
         }
-        req.studentSearchRecord = student;
+        res.json(studends)
     })
-    next();
+    
 
-}
-
-exports.getRecordByEmail = (req,res) => {
-    return res.json(req.studentSearchRecord)
 }

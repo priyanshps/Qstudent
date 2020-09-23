@@ -76,7 +76,22 @@ export const getRecord = (studentId) => {
         method:"GET"
     })
     .then(response => {
-        console.log(response)
+        
+        return response.json()
+    })
+    .catch(err => console.log(err))
+
+}
+
+
+//Search user name
+
+export const getRecordByName = (name) => {
+
+    return fetch(`${API}/search/${name}` , {
+        method:"GET"
+    })
+    .then(response => {
         return response.json()
     })
     .catch(err => console.log(err))

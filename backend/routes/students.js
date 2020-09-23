@@ -8,8 +8,8 @@ const { getStudentById,
     photo,
     updateRecord,
     deleteRecord,
-    getStudentByEmail,
-    getRecordByEmail,
+    getRecordsByName,
+  
 
 } = require('../controllers/students') 
 
@@ -17,7 +17,7 @@ const { getStudentById,
 
 //Getting student Id by parammeters and passing to getStudentById
 router.param("studentId", getStudentById)
-router.param("emailId", getStudentByEmail)
+
 
 
 //Creating The student record 
@@ -30,7 +30,7 @@ router.get("/record/photo/:studentId" , photo)
 
 
 //Searching Records
-router.get("/record/:emailId" , getRecordByEmail)
+router.get("/search/:name" , getRecordsByName)
 
 
 //Update Student Record
