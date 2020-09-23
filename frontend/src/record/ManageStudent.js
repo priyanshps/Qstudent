@@ -93,7 +93,7 @@ export default function ManageStudent() {
                         value={search}
                         placeholder="Search" >
                     </input>
-                    <Link className="btn btn-outline-info btn-sm" to={`/search/${search}`}>Search</Link>
+                    <Link className="  btn btn-outline-info btn-sm" to={`/search/${search}`}>Search</Link>
                    
                 </form>
             </nav>

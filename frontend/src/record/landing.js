@@ -4,14 +4,15 @@ import "../style.css"
 
 export default function landing() {
     return (
-        <div className="container">
-          <div id="landing" className="">
+        <>
+          <header id="landing" className="">
+            <div className="content">
                 <h1>studentQ</h1>
                 <p>Digital Solution for record management </p>
-                <Link type="button" class="btn btn-info btn-lg" to="/add">Add student</Link>
-
-          </div>  
+                <Link type="button" class=" button btn btn-info btn-lg" to="/add">Add student</Link>
+            </div>
+          </header>  
                 
-        </div>
+       </>
     )
 }
